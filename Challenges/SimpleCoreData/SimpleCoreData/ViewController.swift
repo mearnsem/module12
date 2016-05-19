@@ -18,8 +18,7 @@ class ViewController: UIViewController {
     
         let request = NSFetchRequest(entityName: "Person")
         let moc = Stack.sharedStack.managedObjectContext
-        if let people = try? moc.executeFetchRequest(request),
-            person = people.first {
+        if let people = try? moc.executeFetchRequest(request), person = people.first {
             let name = person.valueForKey("name") as! String
             textField.text = name
         }
