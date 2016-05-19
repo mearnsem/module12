@@ -42,8 +42,8 @@ class SongTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("songCell", forIndexPath: indexPath)
         
-        if let song = playlist?.songs[indexPath.row] {
-            cell.textLabel?.text = song.name
+        if let song = playlist?.songs[indexPath.row] as? Song {
+            cell.textLabel?.text = song.songTitle
             cell.detailTextLabel?.text = song.artist
         }
         
@@ -57,9 +57,8 @@ class SongTableViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            guard let playlist = playlist else {return}
-            let song = playlist.songs[indexPath.row]
-            PlaylistController.sharedInstance.removeSongFromPlaylist(song, playlist: playlist)
+            guard let playlist = playlist, song = playlist.songs[indexPath.row] as? Song else {return}
+            SongController.deleteSong(song)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
     }
